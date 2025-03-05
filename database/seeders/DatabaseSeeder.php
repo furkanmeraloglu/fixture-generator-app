@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Team;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -13,11 +14,24 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        $teams = [
+            [
+                'name' => 'Manchester City F.C.',
+                'strength' => 95,
+            ],
+            [
+                'name' => 'Arsenal F.C.',
+                'strength' => 88,
+            ],
+            [
+                'name' => 'Chelsea F.C.',
+                'strength' => 85,
+            ],
+            [
+                'name' => 'Liverpool F.C.',
+                'strength' => 95,
+            ],
+        ];
+        Team::query()->insert($teams);
     }
 }
