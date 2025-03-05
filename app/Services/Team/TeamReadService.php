@@ -33,6 +33,6 @@ class TeamReadService
         if (blank($team)) {
             throw new DataNotFoundException('Team could not be found!');
         }
-        return $team->toArray();
+        return $team->append('team_all_matches')->toArray();
     }
 }
