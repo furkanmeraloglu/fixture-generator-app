@@ -45,7 +45,6 @@ class Team extends Model
     ];
 
     protected $appends = [
-        'team_all_matches',
         'team_total_score_average'
     ];
 
