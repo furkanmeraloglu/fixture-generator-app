@@ -12,8 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('fixtures', function (Blueprint $table) {
-            $table->id();
+            $table->id('fixture_id');
+            $table->integer('week')->unsigned();
+            $table->boolean('is_played')->default(false);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
