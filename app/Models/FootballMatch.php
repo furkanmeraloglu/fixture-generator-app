@@ -5,6 +5,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 
@@ -48,4 +49,28 @@ class FootballMatch extends Model
         'is_played' => 'boolean',
         'deleted_at' => 'datetime',
     ];
+
+    /**
+     * @return BelongsTo
+     */
+    public function homeTeam(): BelongsTo
+    {
+        return $this->belongsTo(Team::class, 'home_team_id', 'team_id');
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function awayTeam(): BelongsTo
+    {
+        return $this->belongsTo(Team::class, 'away_team_id', 'team_id');
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function fixture(): BelongsTo
+    {
+        return $this->belongsTo(Fixture::class, 'fixture_id', 'fixture_id');
+    }
 }

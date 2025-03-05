@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
@@ -31,4 +32,12 @@ class Fixture extends Model
         'is_played' => 'boolean',
         'deleted_at' => 'datetime'
     ];
+
+    /**
+     * @return HasMany
+     */
+    public function footballMatches(): HasMany
+    {
+        return $this->hasMany(FootballMatch::class, 'fixture_id', 'fixture_id');
+    }
 }
