@@ -26,8 +26,8 @@ class GenerateLeagueFixturesService
     private function getAllTeams(): void
     {
         $this->teamIds = Team::query()->pluck('team_id')->toArray();
-        if (count($this->teamIds) != 4) {
-            throw new \Exception('The league fixture can only be generated for 4 teams');
+        if (count($this->teamIds) % 2 !== 0) {
+            throw new \Exception('The league fixtures can only be generated for even number of teams');
         }
     }
 
