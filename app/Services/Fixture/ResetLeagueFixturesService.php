@@ -30,6 +30,7 @@ class ResetLeagueFixturesService
             $this->deleteAllFixtureData();
             $this->resetAllChampionshipProbabilityRecords();
             $this->deleteAllTeamStatsAndRegenerate();
+            $this->reGenerateNewLeagueFixture();
             DB::commit();
             return [ 'message' => 'All fixtures and related data have been reset successfully' ];
         } catch (\Exception $exception) {
@@ -43,7 +44,7 @@ class ResetLeagueFixturesService
      */
     private function deleteAllFootballMatchData(): void
     {
-        FootballMatch::query()->update(['deleted_at' => now()->toDateTimeString()]);
+        FootballMatch::query()->delete();
     }
 
     /**
@@ -51,7 +52,7 @@ class ResetLeagueFixturesService
      */
     private function deleteAllFixtureData(): void
     {
-        Fixture::query()->update(['deleted_at' => now()->toDateTimeString()]);
+        Fixture::query()->delete();
     }
 
     /**
@@ -59,7 +60,7 @@ class ResetLeagueFixturesService
      */
     private function resetAllChampionshipProbabilityRecords(): void
     {
-        ChampionshipPrediction::query()->update(['deleted_at' => now()->toDateTimeString()]);
+        ChampionshipPrediction::query()->delete();
     }
 
     /**
@@ -70,7 +71,16 @@ class ResetLeagueFixturesService
         Team::query()->update([
             'points' => 0,
             'goals_scored' => 0,
-            'goals_conceded' => 0
+            'goals_conceded' => 0,
+            'wins' => 0,
+            'losses' => 0,
+            'draws' => 0,
+            'played_matches' => 0,
         ]);
+    }
+
+    private function reGenerateNewLeagueFixture(): void
+    {
+        (new GenerateLeagueFixturesService())->boot();
     }
 }
