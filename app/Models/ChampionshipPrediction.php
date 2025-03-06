@@ -11,12 +11,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property int $championship_prediction_id
- * @property int $team_id
  * @property int $week
- * @property float $probability_percentage
- * @property Carbon|null $created_at
- * @property Carbon|null $updated_at
- * @property Carbon|null $deleted_at
+ * @property array $predictions
+ * @property Carbon|string|null $created_at
+ * @property Carbon|string|null $updated_at
+ * @property Carbon|string|null $deleted_at
  */
 class ChampionshipPrediction extends Model
 {
@@ -25,22 +24,13 @@ class ChampionshipPrediction extends Model
 
     protected $primaryKey = 'championship_prediction_id';
     protected $fillable = [
-        'team_id',
+        'predictions',
         'week',
-        'probability_percentage',
         'deleted_at'
     ];
     protected $casts = [
-        'team_id' => 'integer',
+        'predictions' => 'array',
         'week' => 'integer',
-        'probability_percentage' => 'decimal:5,2'
+        'deleted_at' => 'datetime',
     ];
-
-    /**
-     * @return BelongsTo
-     */
-    public function team(): BelongsTo
-    {
-        return $this->belongsTo(Team::class, 'team_id', 'team_id');
-    }
 }
