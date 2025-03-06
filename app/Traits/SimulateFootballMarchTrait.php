@@ -27,6 +27,7 @@ trait SimulateFootballMarchTrait
     public function simulateFootballMatch($football_match): array
     {
         $this->resetClassVariables();
+        $this->week = $football_match->week;
         $this->setHomeAndAwayTeamsOfTheCurrentFootballMatch($football_match);
         $this->checkIfChampionshipPredictionIsRequired();
         $this->getTeamsCumulativePerformanceScore();
@@ -41,6 +42,7 @@ trait SimulateFootballMarchTrait
      */
     private function resetClassVariables(): void
     {
+        $this->week = null;
         $this->footballMatch = null;
         $this->homeTeam = null;
         $this->awayTeam = null;

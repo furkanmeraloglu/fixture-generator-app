@@ -2,6 +2,7 @@
 
 namespace App\Services\Fixture;
 
+use App\Models\ChampionshipPrediction;
 use App\Models\Fixture;
 use App\Models\FootballMatch;
 use App\Models\Team;
@@ -15,9 +16,12 @@ class SimulateWeekService
 {
     use GenerateChampionshipPercentageTrait;
     use SimulateFootballMarchTrait;
+
     protected bool $isChampionshipPredictionRequired = false;
     protected Collection $footballMatches;
     protected array $footballMatchResult = [];
+    protected ?array $championshipPredictions = [];
+    protected ?int $week;
 
     /**
      * @return array
@@ -36,7 +40,11 @@ class SimulateWeekService
         return ['message' => 'All football matches of the week have been simulated successfully'];
     }
 
-    private function getFootballMatchesOfTheWeekByOrder(): void
+    /**
+     * @return void
+     * @throws Exception
+     */
+    protected function getFootballMatchesOfTheWeekByOrder(): void
     {
         $fixture = Fixture::query()
             ->select('week')
@@ -55,6 +63,9 @@ class SimulateWeekService
             ->get();
     }
 
+    /**
+     * @return void
+     */
     protected function updateFootballMatchResult(): void
     {
         $this->footballMatch->update([
@@ -65,6 +76,9 @@ class SimulateWeekService
         Fixture::query()->where('week', $this->footballMatch->week)->update(['is_played' => true]);
     }
 
+    /**
+     * @return void
+     */
     protected function updateEachTeamStats(): void
     {
         if ($this->footballMatchResult['home_score'] > $this->footballMatchResult['away_score']) {
@@ -79,6 +93,16 @@ class SimulateWeekService
         }
     }
 
+    /**
+     * @param Team $team
+     * @param int $points
+     * @param int $goals_scored
+     * @param int $goals_conceded
+     * @param bool $win
+     * @param bool $loss
+     * @param bool $draw
+     * @return void
+     */
     private function updateTeamScoresAndPoints(Team $team, int $points, int $goals_scored, int $goals_conceded, bool $win, bool $loss, bool $draw): void
     {
         $team->update([
@@ -92,11 +116,18 @@ class SimulateWeekService
         ]);
     }
 
-    protected function calculateChampionshipPredictionIfRequired(bool $from_simulate_all_service = false): void
+    /**
+     * @return void
+     */
+    protected function calculateChampionshipPredictionIfRequired(): void
     {
-        if ($this->isChampionshipPredictionRequired || $from_simulate_all_service) {
-            dump('Championship prediction is required');
-//            $this->generateChampionshipPredictionIfRequired();
+        if ($this->isChampionshipPredictionRequired) {
+            dump($this->week);
+            $this->championshipPredictions = $this->generateChampionshipPredictionIfRequired();
+            ChampionshipPrediction::query()->create([
+                'week' => $this->week,
+                'predictions' => $this->championshipPredictions
+            ]);
         }
     }
 }
