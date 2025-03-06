@@ -3,13 +3,13 @@
 namespace App\Services\Fixture;
 
 use App\Models\FootballMatch;
-use App\Traits\SimulateFootballMarchTrait;
+use App\Traits\SimulateFootballMatchTrait;
 use Exception;
 use Symfony\Component\HttpFoundation\Response;
 
 class SimulateAllWeeksService extends SimulateWeekService
 {
-    use SimulateFootballMarchTrait;
+    use SimulateFootballMatchTrait;
 
     /**
      * @return string[]

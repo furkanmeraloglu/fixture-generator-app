@@ -7,7 +7,7 @@ use App\Models\Fixture;
 use App\Models\FootballMatch;
 use App\Models\Team;
 use App\Traits\GenerateChampionshipPercentageTrait;
-use App\Traits\SimulateFootballMarchTrait;
+use App\Traits\SimulateFootballMatchTrait;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 class SimulateWeekService
 {
     use GenerateChampionshipPercentageTrait;
-    use SimulateFootballMarchTrait;
+    use SimulateFootballMatchTrait;
 
     protected bool $isChampionshipPredictionRequired = false;
     protected Collection $footballMatches;

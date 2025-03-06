@@ -9,16 +9,16 @@ use Illuminate\Http\Request;
 class ReadWeeklyFixtureService
 {
     protected Request $request;
-    protected int $fixtureId;
+    protected int $week;
 
     /**
      * @param Request $request
-     * @param int $fixture_id
+     * @param int $week
      */
-    public function __construct(Request $request, int $fixture_id)
+    public function __construct(Request $request, int $week)
     {
         $this->request = $request;
-        $this->fixtureId = $fixture_id;
+        $this->week = $week;
     }
 
     /**
@@ -33,12 +33,12 @@ class ReadWeeklyFixtureService
                     $query->select('fixture_id', 'home_team_id', 'away_team_id', 'home_team_goals', 'away_team_goals');
                 },
                 'footballMatches.homeTeam' => function ($query) {
-                    $query->select('team_id', 'name', 'points', 'goals_scored', 'goals_conceded');
+                    $query->select('team_id', 'name', 'points', 'goals_scored', 'goals_conceded', 'wins', 'losses', 'draws', 'played_matches');
                 },
                 'footballMatches.awayTeam' => function ($query) {
-                    $query->select('team_id', 'name', 'points', 'goals_scored', 'goals_conceded');
+                    $query->select('team_id', 'name', 'points', 'goals_scored', 'goals_conceded', 'wins', 'losses', 'draws', 'played_matches');
                 }
-            ])->find($this->fixtureId);
+            ])->where('week', $this->week)->get();
 
         if (blank($fixture)) {
             throw new DataNotFoundException('Fixture could not be found!');

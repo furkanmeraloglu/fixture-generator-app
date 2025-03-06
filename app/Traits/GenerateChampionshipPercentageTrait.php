@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 trait GenerateChampionshipPercentageTrait
 {
-    use SimulateFootballMarchTrait;
+    use SimulateFootballMatchTrait;
 
     protected Collection $teams;
     protected array $upcomingMatchResultPredictions = [];

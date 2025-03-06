@@ -30,13 +30,13 @@ class FixtureController extends Controller
 
     /**
      * @param Request $request
-     * @param int $fixture_id
+     * @param int $week
      * @return JsonResponse
      */
-    public function getWeeklyFixture(Request $request, int $fixture_id): JsonResponse
+    public function getWeeklyFixture(Request $request, int $week): JsonResponse
     {
         try {
-            $data = (new ReadWeeklyFixtureService($request, $fixture_id))->boot();
+            $data = (new ReadWeeklyFixtureService($request, $week))->boot();
             return $this->getSuccessfulResponse($data, 'Weekly fixture returned successfully');
         } catch (\Throwable $th) {
             return $this->getErrorResponse($th->getMessage(), $th->getCode());
@@ -57,7 +57,7 @@ class FixtureController extends Controller
         }
     }
 
-    public function resetAllFixturesAndFootballMatches(Request $request): JsonResponse
+    public function resetAllFixturesAndFootballMatchesAndReGenerateNewFixtures(Request $request): JsonResponse
     {
         try {
             $data = (new ResetLeagueFixturesService($request))->boot();
@@ -67,7 +67,7 @@ class FixtureController extends Controller
         }
     }
 
-    public function simulateWeek(Request $request): JsonResponse
+    public function simulateWeekMatches(Request $request): JsonResponse
     {
         try {
             $data = (new SimulateWeekService())->boot();
@@ -77,7 +77,7 @@ class FixtureController extends Controller
         }
     }
 
-    public function simulateAllWeeks(Request $request): JsonResponse
+    public function simulateAllWeeksMatches(Request $request): JsonResponse
     {
         try {
             $data = (new SimulateAllWeeksService())->boot();
