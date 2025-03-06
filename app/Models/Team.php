@@ -16,9 +16,16 @@ use Illuminate\Support\Carbon;
  * @property int $points
  * @property int $goals_scored
  * @property int $goals_conceded
- * @property Carbon|null $created_at
- * @property Carbon|null $updated_at
- * @property Carbon|null $deleted_at
+ * @property int wins
+ * @property int losses
+ * @property int draws
+ * @property int played_matches
+ * @property Collection $homeMatches
+ * @property Collection $awayMatches
+ * @property array $team_all_matches
+ * @property Carbon|string|null $created_at
+ * @property Carbon|string|null $updated_at
+ * @property Carbon|string|null $deleted_at
  */
 class Team extends Model
 {
@@ -32,6 +39,10 @@ class Team extends Model
         'points',
         'goals_scored',
         'goals_conceded',
+        'wins',
+        'losses',
+        'draws',
+        'played_matches',
         'deleted_at'
     ];
 
@@ -41,6 +52,10 @@ class Team extends Model
         'points' => 'integer',
         'goals_scored' => 'integer',
         'goals_conceded' => 'integer',
+        'wins' => 'integer',
+        'losses' => 'integer',
+        'draws' => 'integer',
+        'played_matches' => 'integer',
         'deleted_at' => 'datetime',
     ];
 
