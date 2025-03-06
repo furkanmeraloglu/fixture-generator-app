@@ -11,15 +11,9 @@ use Illuminate\Http\Request;
 
 class GenerateLeagueFixturesService
 {
-    protected Request $request;
     protected Collection|array $teamIds;
     protected array $fixtures = [];
     protected int $totalNumberOfWeeks;
-
-    public function __construct(Request $request)
-    {
-        $this->request = $request;
-    }
 
     public function boot()
     {
