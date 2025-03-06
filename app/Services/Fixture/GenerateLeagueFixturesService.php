@@ -5,9 +5,7 @@ namespace App\Services\Fixture;
 use App\Models\Fixture;
 use App\Models\FootballMatch;
 use App\Models\Team;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Http\Request;
 
 class GenerateLeagueFixturesService
 {
@@ -83,8 +81,7 @@ class GenerateLeagueFixturesService
      */
     private function saveFixturesAndMatchesToDB(): void
     {
-        foreach ($this->fixtures as $key => $fixture)
-        {
+        foreach ($this->fixtures as $key => $fixture) {
             $currentWeekFixture = Fixture::query()->create([
                 'week' => $fixture['week'],
                 'is_played' => false,
