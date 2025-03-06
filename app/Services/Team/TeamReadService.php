@@ -10,16 +10,13 @@ use Illuminate\Http\Request;
 
 class TeamReadService
 {
-    protected Request $request;
     protected int $teamId;
 
     /**
-     * @param Request $request
      * @param int $team_id
      */
-    public function __construct(Request $request, int $team_id)
+    public function __construct(int $team_id)
     {
-        $this->request = $request;
         $this->teamId = $team_id;
     }
 

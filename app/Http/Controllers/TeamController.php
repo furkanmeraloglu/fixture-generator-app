@@ -31,7 +31,7 @@ class TeamController extends Controller
     public function getTeam(Request $request, int $team_id): JsonResponse
     {
         try {
-            $data = (new TeamReadService($request, $team_id))->boot();
+            $data = (new TeamReadService($team_id))->boot();
             return $this->getSuccessfulResponse($data, 'Team returned successfully');
         } catch (\Throwable $th) {
             return $this->getErrorResponse($th->getMessage(), $th->getCode());

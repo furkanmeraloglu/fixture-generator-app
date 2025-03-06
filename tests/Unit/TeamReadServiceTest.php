@@ -5,12 +5,10 @@ namespace Tests\Unit;
 use App\Exceptions\DataNotFoundException;
 use App\Models\Team;
 use App\Services\Team\TeamReadService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class TeamReadServiceTest extends TestCase
 {
-    use RefreshDatabase;
     public function test_boot_function_returns_team_data_when_team_exists()
     {
         $team = Team::factory()->create([

@@ -4,14 +4,11 @@ namespace Tests\Unit;
 
 use App\Models\Team;
 use App\Services\Team\TeamReadAllService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Request;
 use Tests\TestCase;
 
 class TeamReadAllServiceTest  extends TestCase
 {
-    use RefreshDatabase;
-
     public function test_boot_function_returns_all_teams_without_ordering()
     {
         $first_team = Team::factory()->create(['name' => 'Besiktas JK', 'strength' => 90]);
