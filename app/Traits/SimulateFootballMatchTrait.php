@@ -5,7 +5,7 @@ namespace App\Traits;
 use App\Models\FootballMatch;
 use App\Models\Team;
 
-trait SimulateFootballMarchTrait
+trait SimulateFootballMatchTrait
 {
     protected float $homeAdvantage = 1.1;
     protected float $calculatedHomeAttackPower;
