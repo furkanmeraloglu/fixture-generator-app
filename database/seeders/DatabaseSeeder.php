@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
         $teams = [
             [
                 'name' => 'Manchester City F.C.',
-                'strength' => 95,
+                'strength' => 94,
             ],
             [
                 'name' => 'Arsenal F.C.',
@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'name' => 'Liverpool F.C.',
-                'strength' => 95,
+                'strength' => 91,
             ],
         ];
         Team::query()->insert($teams);
