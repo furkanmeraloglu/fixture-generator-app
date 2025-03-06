@@ -15,7 +15,7 @@ Route::prefix('fixtures')->group(function () {
     Route::get('/', [FixtureController::class, 'getAllWeeklyFixtures']);
     Route::get('/{fixture_id}', [FixtureController::class, 'getWeeklyFixture']);
     Route::post('/', [FixtureController::class, 'generateLeagueFixtures']);
-    Route::post('/simulate-week', [FixtureController::class, 'simulateWeek']);
-    Route::post('/simulate-all', [FixtureController::class, 'simulateAllWeeks']);
-    Route::delete('/', [FixtureController::class, 'resetAllFixturesAndFootballMatches']);
+    Route::post('/simulate-week', [FixtureController::class, 'simulateWeekMatches']);
+    Route::post('/simulate-all', [FixtureController::class, 'simulateAllWeeksMatches']);
+    Route::delete('/', [FixtureController::class, 'resetAllFixturesAndFootballMatchesAndReGenerateNewFixtures']);
 });
