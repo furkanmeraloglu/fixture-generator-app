@@ -31,6 +31,22 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Liverpool F.C.',
                 'strength' => 91,
             ],
+            /*[
+                'name' => 'Manchester United F.C.',
+                'strength' => 82,
+            ],
+            [
+                'name' => 'West Ham United F.C.',
+                'strength' => 80,
+            ],
+            [
+                'name' => 'Brighton F.C.',
+                'strength' => 78,
+            ],
+            [
+                'name' => 'Leicester City F.C.',
+                'strength' => 84,
+            ]*/
         ];
         Team::query()->insert($teams);
     }
