@@ -6,6 +6,8 @@ use App\Services\Fixture\GenerateLeagueFixturesService;
 use App\Services\Fixture\ReadAllWeeklyFixturesService;
 use App\Services\Fixture\ReadWeeklyFixtureService;
 use App\Services\Fixture\ResetLeagueFixturesService;
+use App\Services\Fixture\SimulateAllWeeksService;
+use App\Services\Fixture\SimulateWeekService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -48,7 +50,7 @@ class FixtureController extends Controller
     public function generateLeagueFixtures(Request $request): JsonResponse
     {
         try {
-            $data = (new GenerateLeagueFixturesService($request))->boot();
+            $data = (new GenerateLeagueFixturesService())->boot();
             return $this->getSuccessfulResponse($data, 'League fixtures generated successfully', Response::HTTP_CREATED);
         } catch (\Throwable $th) {
             return $this->getErrorResponse($th->getMessage(), $th->getCode());
@@ -60,6 +62,26 @@ class FixtureController extends Controller
         try {
             $data = (new ResetLeagueFixturesService($request))->boot();
             return $this->getSuccessfulResponse($data, 'League fixtures has been reset successfully');
+        } catch (\Throwable $th) {
+            return $this->getErrorResponse($th->getMessage(), $th->getCode());
+        }
+    }
+
+    public function simulateWeek(Request $request): JsonResponse
+    {
+        try {
+            $data = (new SimulateWeekService())->boot();
+            return $this->getSuccessfulResponse([], $data['message']);
+        } catch (\Throwable $th) {
+            return $this->getErrorResponse($th->getMessage(), $th->getCode());
+        }
+    }
+
+    public function simulateAllWeeks(Request $request): JsonResponse
+    {
+        try {
+            $data = (new SimulateAllWeeksService())->boot();
+            return $this->getSuccessfulResponse([], $data['message']);
         } catch (\Throwable $th) {
             return $this->getErrorResponse($th->getMessage(), $th->getCode());
         }
