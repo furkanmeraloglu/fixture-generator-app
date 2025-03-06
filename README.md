@@ -1,66 +1,102 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Fixture Generator App
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Project Overview
 
-## About Laravel
+Fixture Generator App is a football fixture simulation application. By default, it automatically generates a double round-robin fixture for 4 teams with different overall strength ratings (you can adjust the number of teams through DatabaseSeeder.php according to your preferences). The application simulates matches based on these fixtures and calculates championship probability percentages for each team starting from the 4th week (based on the default 4-team setup).
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### Key Features
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- **Automatic Fixture Generation**: Creates a balanced double round-robin tournament schedule
+- **Match Simulation**: Simulates matches based on multiple factors
+- **Championship Probability Calculator**: Predicts each team's chances of winning the championship
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Simulation Factors
 
-## Learning Laravel
+The match simulation algorithm takes into account several factors:
+- Team overall strength ratings
+- Home/away fan support multiplier
+- Teams' previous performance (based on goals scored and conceded)
+- Goalkeeper performance probability (poor/normal/excellent)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+These factors collectively determine the number of scoring opportunities for both home and away teams, leading to the final match result prediction.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### Championship Prediction Algorithm
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Championship expectation percentages are calculated based on:
+- Teams' performance in previous weeks
+- Points gap with the leading team
+- Simulation of potential results in remaining fixtures
 
-## Laravel Sponsors
+This comprehensive approach provides realistic predictions that evolve as the tournament progresses.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### With Fixture Generator App, you can:
 
-### Premium Partners
+- **Custom Team Selection**: Create double-round robin fixtures with your selected teams
+- **Flexible Match Simulation**: Simulate matches week by week or all at once
+- **Manual Result Adjustment**: Manually change any match result as needed
+- **Reset Functionality**: Reset the fixture and create a new one after all matches have been simulated
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+## Tech Stack
+### Backend (API)
+- PHP 8.2+
+- Laravel 12.0
+### Frontend
+- Vue.js 3.5.13
+- Vue Router 4.5.0
+- Vite 6.2.0
+### Development Tools
+- Composer
+- NPM
+- Laravel Sail
+- PHPUnit 11.5.3
+## Requirements
+- PHP 8.2 or higher
+- Composer
+- Node.js and NPM
 
-## Contributing
+## Installation
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Clone the repository
+```bash
+    git clone git@github.com:furkanmeraloglu/fixture-generator-app.git
+    cd fixture-generator-app
+```
 
-## Code of Conduct
+### Install Composer Dependencies
+```bash
+    composer install
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Set Up .env File
+```bash
+    cp .env.example .env
+    php artisan migrate
+```
 
-## Security Vulnerabilities
+### Install Laravel Sail
+```bash
+    ./vendor/bin/sail install
+    ./vendor/bin/sail up -d # Start the development server
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Migrate the DB and Seed Dummy Data
+```bash
+    ./vendor/bin/sail artisan migrate:fresh --seed
+```
 
-## License
+### Generate Application Key
+```bash
+    ./vendor/bin/sail artisan key:generate
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Install NPM Dependencies
+```bash
+    npm install
+    npm run build
+    npm run dev
+```
+
+### To Run Unit Tests
+```bash
+    ./vendor/bin/sail artisan test
+```
