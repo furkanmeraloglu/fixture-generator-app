@@ -12,9 +12,9 @@ use Illuminate\Support\Carbon;
  * @property int $fixture_id
  * @property int $week
  * @property bool $is_played
- * @property Carbon|null $created_at
- * @property Carbon|null $updated_at
- * @property Carbon|null $deleted_at
+ * @property Carbon|string|null $created_at
+ * @property Carbon|string|null $updated_at
+ * @property Carbon|string|null $deleted_at
  */
 class Fixture extends Model
 {
