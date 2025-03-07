@@ -1,12 +1,11 @@
-
-
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Laravel</title>
-    @vite(['resources/js/app.js'])
+    <link rel="icon" href="{{ asset('football-icon.gif') }}" type="image/gif">
+    <title>Fixture Generator</title>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body>
 <div id="app"></div>

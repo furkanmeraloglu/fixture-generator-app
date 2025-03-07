@@ -5,7 +5,7 @@
                 <h5 class="mb-0">League Table</h5>
             </div>
             <div class="card-body">
-                <div v-if="loading" class="text-center">
+                <div v-if="loadingTeams" class="text-center">
                     <div class="spinner-border" role="status">
                         <span class="visually-hidden">Loading...</span>
                     </div>
@@ -24,7 +24,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr v-for="team in teams" :key="team.id">
+                        <tr v-for="team in teams" :key="team.team_id">
                             <td>{{ team.name }}</td>
                             <td>{{ team.points }}</td>
                             <td>{{ team.played_matches }}</td>
@@ -43,28 +43,15 @@
 <script>
 export default {
     name: 'TeamStandings',
-    data() {
-        return {
-            teams: [],
-            loading: true,
+    props: {
+        teams: {
+            type: Array,
+            default: () => []
+        },
+        loadingTeams: {
+            type: Boolean,
+            default: false
         }
     },
-    mounted() {
-        this.fetchTeams();
-    },
-    methods: {
-        async fetchTeams() {
-            this.loading = true;
-            await axios.get('/api/teams')
-                .then(response => {
-                    this.teams = response.data.data;
-                    this.loading = false;
-                })
-                .catch(error => {
-                    console.error('Error fetching teams:', error);
-                    this.loading = false;
-                });
-        },
-    }
 };
 </script>

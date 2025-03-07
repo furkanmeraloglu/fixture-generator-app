@@ -1,4 +1,4 @@
-@import 'tailwindcss';
+@import 'bootstrap/dist/css/bootstrap.min.css';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
@@ -9,4 +9,91 @@
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    overflow-x: hidden;
+}
+
+body {
+    background-size: cover;
+}
+
+#app {
+    min-height: 100vh;
+}
+
+.fixtures-container {
+    padding-left: 3rem;
+    padding-right: 3rem;
+    padding-top: 1.5rem;
+}
+
+.fixture-title {
+    font-weight: 600;
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid #007bff;
+    display: inline-block;
+}
+
+.fixture-row {
+    border-radius: 6px;
+    transition: background-color 0.2s;
+}
+
+.fixture-row:hover {
+    background-color: rgba(0, 0, 0, 0.03);
+}
+
+.fixture-team {
+    width: 40%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.home-team {
+    /*padding-right: 40px;*/
+    text-align: right;
+}
+
+.away-team {
+    padding-left: 40px;
+    text-align: left;
+}
+
+.fixture-score {
+    width: 35%;
+    padding-left: 45px;
+    text-align: center;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.winner {
+    font-weight: bold;
+}
+
+.edit-btn {
+    padding: 0.2rem 0.4rem;
+    visibility: hidden;
+}
+
+.fixture-row:hover .edit-btn {
+    visibility: visible;
+}
+
+.team-name {
+    font-size: 1.2rem;
+    font-weight: 500;
+    display: block;
 }
