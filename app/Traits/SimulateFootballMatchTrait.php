@@ -22,14 +22,14 @@ trait SimulateFootballMatchTrait
 
     /**
      * @param $football_match
+     * @param bool $is_prediction_required
      * @return array
      */
-    public function simulateFootballMatch($football_match): array
+    public function simulateFootballMatch($football_match, bool $is_prediction_required = true): array
     {
         $this->resetClassVariables();
-        $this->week = $football_match->week;
         $this->setHomeAndAwayTeamsOfTheCurrentFootballMatch($football_match);
-        $this->checkIfChampionshipPredictionIsRequired();
+        $this->checkIfChampionshipPredictionIsRequired($is_prediction_required);
         $this->getTeamsCumulativePerformanceScore();
         $this->calculateEachTeamAttackPower();
         $this->setGoalKeeperFactorForEachTeamOfTheCurrentFootballMatch();
@@ -42,7 +42,6 @@ trait SimulateFootballMatchTrait
      */
     private function resetClassVariables(): void
     {
-        $this->week = null;
         $this->footballMatch = null;
         $this->homeTeam = null;
         $this->awayTeam = null;
@@ -69,12 +68,15 @@ trait SimulateFootballMatchTrait
     }
 
     /**
+     * @param bool $is_prediction_required
      * @return void
      */
-    private function checkIfChampionshipPredictionIsRequired(): void
+    private function checkIfChampionshipPredictionIsRequired(bool $is_prediction_required): void
     {
-        if ($this->footballMatch->week >= 4 && $this->footballMatch->week != 6) {
-            $this->isChampionshipPredictionRequired = true;
+        if ($is_prediction_required) {
+            if ($this->week >= 4 && $this->week != 6) {
+                $this->isChampionshipPredictionRequired = true;
+            }
         }
     }
 
