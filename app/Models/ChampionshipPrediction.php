@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 /**
  * @property int $championship_prediction_id
  * @property int $week
- * @property array $predictions
+ * @property array $redictions
  * @property Carbon|string|null $created_at
  * @property Carbon|string|null $updated_at
  * @property Carbon|string|null $deleted_at
