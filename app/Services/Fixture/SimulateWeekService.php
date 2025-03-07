@@ -2,6 +2,7 @@
 
 namespace App\Services\Fixture;
 
+use App\Exceptions\DataNotFoundException;
 use App\Models\ChampionshipPrediction;
 use App\Models\Fixture;
 use App\Models\FootballMatch;
@@ -24,20 +25,23 @@ class SimulateWeekService
     protected ?int $week;
 
     /**
+     * @param int|null $week
      * @return array
+     * @throws DataNotFoundException
      * @throws Exception
      */
-    public function boot(): array
+    public function boot(?int $week = null): array
     {
+        $this->week = $week;
         $this->getFootballMatchesOfTheWeekByOrder();
 
         foreach ($this->footballMatches as $football_match) {
-            $this->footballMatchResult = $this->simulateFootballMatch($football_match);
+            $this->footballMatchResult = $this->simulateFootballMatch($football_match, true);
             $this->updateFootballMatchResult();
             $this->updateEachTeamStats();
         }
         $this->calculateChampionshipPredictionIfRequired();
-        return ['message' => 'All football matches of the week have been simulated successfully'];
+        return (new ReadWeeklyFixtureService($this->week))->boot();
     }
 
     /**
@@ -46,21 +50,15 @@ class SimulateWeekService
      */
     protected function getFootballMatchesOfTheWeekByOrder(): void
     {
-        $fixture = Fixture::query()
-            ->select('week')
-            ->where('is_played', false)
-            ->orderBy('week')
-            ->first();
-
-        if (blank($fixture)) {
-            throw new Exception('All football matches of this season have been played. Please reset the season to simulate again.', Response::HTTP_BAD_REQUEST);
-        }
-
         $this->footballMatches = FootballMatch::query()
-            ->where('week', $fixture->week)
+            ->where('week', $this->week)
             ->where('is_played', false)
             ->orderBy('created_at')
             ->get();
+
+        if ($this->footballMatches->isEmpty()) {
+            throw new Exception('All football matches of this season have been played. Please reset the season to simulate again.', Response::HTTP_BAD_REQUEST);
+        }
     }
 
     /**
@@ -122,7 +120,6 @@ class SimulateWeekService
     protected function calculateChampionshipPredictionIfRequired(): void
     {
         if ($this->isChampionshipPredictionRequired) {
-            dump($this->week);
             $this->championshipPredictions = $this->generateChampionshipPredictionIfRequired();
             ChampionshipPrediction::query()->create([
                 'week' => $this->week,

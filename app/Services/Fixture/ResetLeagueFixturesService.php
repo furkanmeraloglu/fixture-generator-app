@@ -81,6 +81,6 @@ class ResetLeagueFixturesService
 
     private function reGenerateNewLeagueFixture(): void
     {
-        (new GenerateLeagueFixturesService())->boot();
+        (new GenerateLeagueFixturesService())->boot(true);
     }
 }
