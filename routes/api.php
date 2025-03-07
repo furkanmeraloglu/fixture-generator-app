@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ChampionshipPredictionController;
 use App\Http\Controllers\FixtureController;
 use App\Http\Controllers\FootballMatchController;
 use App\Http\Controllers\TeamController;
@@ -10,6 +11,10 @@ Route::prefix('teams')->group(function () {
     Route::get('/', [TeamController::class, 'getAllTeams']);
     Route::get('/{team_id}', [TeamController::class, 'getTeam']);
 });
+
+Route::get('/predictions/{week}', [ChampionshipPredictionController::class, 'getWeekPredictions']);
+
+Route::patch('/matches/{fixture_id}', [FootballMatchController::class, 'updateMatchResult']);
 
 Route::prefix('fixtures')->group(function () {
     Route::get('/', [FixtureController::class, 'getAllWeeklyFixtures']);
