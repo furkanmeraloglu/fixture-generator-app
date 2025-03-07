@@ -4,90 +4,54 @@ namespace Tests\Unit;
 
 use App\Models\Team;
 use App\Services\Team\TeamReadAllService;
-use Illuminate\Http\Request;
 use Tests\TestCase;
 
-class TeamReadAllServiceTest  extends TestCase
+class TeamReadAllServiceTest extends TestCase
 {
-    public function test_boot_function_returns_all_teams_without_ordering()
+    public function test_boot_function_returns_all_teams_ordered_by_points_and_score_average()
     {
-        $first_team = Team::factory()->create(['name' => 'Besiktas JK', 'strength' => 90]);
-        $second_team = Team::factory()->create(['name' => 'Galatasaray SK', 'strength' => 80]);
-        $third_team = Team::factory()->create(['name' => 'Fenerbahce SK', 'strength' => 85]);
-        $fourth_team = Team::factory()->create(['name' => 'Trabzonspor', 'strength' => 75]);
+        $first_team = Team::factory()->create([
+            'name' => 'Besiktas JK',
+            'points' => 30,
+            'goals_scored' => 20,
+            'goals_conceded' => 10
+        ]);
+        $second_team = Team::factory()->create([
+            'name' => 'Galatasaray SK',
+            'points' => 30,
+            'goals_scored' => 25,
+            'goals_conceded' => 15
+        ]);
+        $third_team = Team::factory()->create([
+            'name' => 'Fenerbahce SK',
+            'points' => 25,
+            'goals_scored' => 18,
+            'goals_conceded' => 12
+        ]);
+        $fourth_team = Team::factory()->create([
+            'name' => 'Trabzonspor',
+            'points' => 20,
+            'goals_scored' => 15,
+            'goals_conceded' => 15
+        ]);
 
-        $request = new Request();
-
-        $response = (new TeamReadAllService($request))->boot();
-
-        $this->assertCount(4, $response);
-        $this->assertContains($first_team->team_id, array_column($response, 'team_id'));
-        $this->assertContains($second_team->team_id, array_column($response, 'team_id'));
-        $this->assertContains($third_team->team_id, array_column($response, 'team_id'));
-        $this->assertContains($fourth_team->team_id, array_column($response, 'team_id'));
-    }
-
-    public function test_boot_function_returns_all_teams_ordered_by_strength()
-    {
-        $first_team = Team::factory()->create(['name' => 'Besiktas JK', 'strength' => 90]);
-        $second_team = Team::factory()->create(['name' => 'Galatasaray SK', 'strength' => 80]);
-        $third_team = Team::factory()->create(['name' => 'Fenerbahce SK', 'strength' => 85]);
-        $fourth_team = Team::factory()->create(['name' => 'Trabzonspor', 'strength' => 75]);
-
-        $request = new Request(['__order_by' => '-strength']);
-
-        $response = (new TeamReadAllService($request))->boot();
-
-        $this->assertCount(4, $response);
-        $this->assertEquals(90, $response[0]['strength']);
-        $this->assertEquals(85, $response[1]['strength']);
-        $this->assertEquals(80, $response[2]['strength']);
-        $this->assertEquals(75, $response[3]['strength']);
-
-        $request = new Request(['__order_by' => 'strength']);
-
-        $response = (new TeamReadAllService($request))->boot();
+        $response = (new TeamReadAllService())->boot();
 
         $this->assertCount(4, $response);
-        $this->assertEquals(75, $response[0]['strength']);
-        $this->assertEquals(80, $response[1]['strength']);
-        $this->assertEquals(85, $response[2]['strength']);
-        $this->assertEquals(90, $response[3]['strength']);
-    }
 
-    public function test_boot_function_returns_all_teams_ordered_by_name()
-    {
-        $first_team = Team::factory()->create(['name' => 'Besiktas JK', 'strength' => 90]);
-        $second_team = Team::factory()->create(['name' => 'Galatasaray SK', 'strength' => 80]);
-        $third_team = Team::factory()->create(['name' => 'Fenerbahce SK', 'strength' => 85]);
-        $fourth_team = Team::factory()->create(['name' => 'Trabzonspor', 'strength' => 75]);
+        $this->assertEquals(30, $response[0]['points']);
+        $this->assertEquals(30, $response[1]['points']);
+        $this->assertEquals(25, $response[2]['points']);
+        $this->assertEquals(20, $response[3]['points']);
 
-        $request = new Request(['__order_by' => '-name']);
-
-        $response = (new TeamReadAllService($request))->boot();
-
-        $this->assertCount(4, $response);
-        $this->assertEquals('Trabzonspor', $response[0]['name']);
-        $this->assertEquals('Galatasaray SK', $response[1]['name']);
-        $this->assertEquals('Fenerbahce SK', $response[2]['name']);
-        $this->assertEquals('Besiktas JK', $response[3]['name']);
-
-        $request = new Request(['__order_by' => 'name']);
-
-        $response = (new TeamReadAllService($request))->boot();
-
-        $this->assertCount(4, $response);
+        // Same points, same average scores. Besiktas is leaper because of the name.
         $this->assertEquals('Besiktas JK', $response[0]['name']);
-        $this->assertEquals('Fenerbahce SK', $response[1]['name']);
-        $this->assertEquals('Galatasaray SK', $response[2]['name']);
-        $this->assertEquals('Trabzonspor', $response[3]['name']);
+        $this->assertEquals('Galatasaray SK', $response[1]['name']);
     }
 
-    public function test_boot_function_returns_null_array_if_there_is_no_teams()
+    public function test_boot_function_returns_empty_array_if_there_are_no_teams()
     {
-        $request = new Request();
-
-        $response = (new TeamReadAllService($request))->boot();
+        $response = (new TeamReadAllService())->boot();
 
         $this->assertIsArray($response);
         $this->assertEmpty($response);

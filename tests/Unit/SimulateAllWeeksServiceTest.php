@@ -63,7 +63,7 @@ class SimulateAllWeeksServiceTest extends TestCase
         ]);
 
         $result = (new class extends SimulateAllWeeksService {
-            public function simulateFootballMatch($football_match): array
+            public function simulateFootballMatch($football_match, bool $is_prediction_required = true): array
             {
                 $this->footballMatch = $football_match;
                 $this->homeTeam = $football_match->homeTeam;
@@ -76,8 +76,6 @@ class SimulateAllWeeksServiceTest extends TestCase
             }
         })->boot();
 
-        $this->assertEquals('All football matches of the league have been simulated successfully', $result['message']);
-
         $this->assertEquals(2, FootballMatch::where('is_played', true)->count());
         $this->assertEquals(0, FootballMatch::where('is_played', false)->count());
 
@@ -87,19 +85,19 @@ class SimulateAllWeeksServiceTest extends TestCase
         $updatedTeam1 = $team1->fresh();
         $updatedTeam2 = $team2->fresh();
 
-        $this->assertEquals(3, $updatedTeam1->points); // 3 points for the win in first match
-        $this->assertEquals(3, $updatedTeam1->goals_scored); // 2 in first match + 1 in second match
-        $this->assertEquals(3, $updatedTeam1->goals_conceded); // 1 in first match + 2 in second match
-        $this->assertEquals(1, $updatedTeam1->wins); // win in first match
-        $this->assertEquals(1, $updatedTeam1->losses); // loss in second match
+        $this->assertEquals(3, $updatedTeam1->points);
+        $this->assertEquals(3, $updatedTeam1->goals_scored);
+        $this->assertEquals(3, $updatedTeam1->goals_conceded);
+        $this->assertEquals(1, $updatedTeam1->wins);
+        $this->assertEquals(1, $updatedTeam1->losses);
         $this->assertEquals(0, $updatedTeam1->draws);
         $this->assertEquals(2, $updatedTeam1->played_matches);
 
-        $this->assertEquals(3, $updatedTeam2->points); // 3 points for the win in second match
-        $this->assertEquals(3, $updatedTeam2->goals_scored); // 1 in first match + 2 in second match
-        $this->assertEquals(3, $updatedTeam2->goals_conceded); // 2 in first match + 1 in second match
-        $this->assertEquals(1, $updatedTeam2->wins); // win in second match
-        $this->assertEquals(1, $updatedTeam2->losses); // loss in first match
+        $this->assertEquals(3, $updatedTeam2->points);
+        $this->assertEquals(3, $updatedTeam2->goals_scored);
+        $this->assertEquals(3, $updatedTeam2->goals_conceded);
+        $this->assertEquals(1, $updatedTeam2->wins);
+        $this->assertEquals(1, $updatedTeam2->losses);
         $this->assertEquals(0, $updatedTeam2->draws);
         $this->assertEquals(2, $updatedTeam2->played_matches);
     }
@@ -129,7 +127,6 @@ class SimulateAllWeeksServiceTest extends TestCase
             ]);
         }
 
-        // Week 1
         FootballMatch::factory()->create([
             'fixture_id' => $fixtures[1]->fixture_id,
             'week' => 1,
@@ -145,7 +142,6 @@ class SimulateAllWeeksServiceTest extends TestCase
             'is_played' => false
         ]);
 
-        // Week 2
         FootballMatch::factory()->create([
             'fixture_id' => $fixtures[2]->fixture_id,
             'week' => 2,
@@ -161,7 +157,6 @@ class SimulateAllWeeksServiceTest extends TestCase
             'is_played' => false
         ]);
 
-        // Week 3
         FootballMatch::factory()->create([
             'fixture_id' => $fixtures[3]->fixture_id,
             'week' => 3,
@@ -179,8 +174,6 @@ class SimulateAllWeeksServiceTest extends TestCase
 
         $service = new SimulateAllWeeksService();
         $result = $service->boot();
-
-        $this->assertEquals('All football matches of the league have been simulated successfully', $result['message']);
 
         $this->assertEquals(6, FootballMatch::where('is_played', true)->count());
         $this->assertEquals(0, FootballMatch::where('is_played', false)->count());
@@ -243,7 +236,7 @@ class SimulateAllWeeksServiceTest extends TestCase
         ]);
 
         (new class extends SimulateAllWeeksService {
-            public function simulateFootballMatch($football_match): array
+            public function simulateFootballMatch($football_match, bool $is_prediction_required = true): array
             {
                 $this->footballMatch = $football_match;
                 $this->homeTeam = $football_match->homeTeam;

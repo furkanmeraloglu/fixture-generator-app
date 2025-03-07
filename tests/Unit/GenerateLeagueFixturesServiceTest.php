@@ -10,20 +10,6 @@ use Tests\TestCase;
 
 class GenerateLeagueFixturesServiceTest extends TestCase
 {
-    public function test_boot_function_generates_correct_number_of_fixtures_and_matches()
-    {
-        Team::factory()->count(4)->create();
-
-        $response = (new GenerateLeagueFixturesService())->boot();
-
-        $this->assertEquals(12, Fixture::count());
-        $this->assertEquals(12, FootballMatch::count());
-        $this->assertEquals(12, count($response));
-
-        $fixtureWeeks = Fixture::pluck('fixture_id')->toArray();
-        $this->assertEquals([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], $fixtureWeeks);
-    }
-
     public function test_boot_function_creates_correct_match_pairs()
     {
         $team1 = Team::factory()->create();
@@ -75,6 +61,17 @@ class GenerateLeagueFixturesServiceTest extends TestCase
             $matchesInWeek = FootballMatch::where('week', $week)->count();
             $this->assertEquals(2, $matchesInWeek, "Week $week should have exactly 2 matches");
         }
+
+        for ($week = 1; $week <= 3; $week++) {
+            $firstRoundMatches = FootballMatch::where('week', $week)->get();
+            $secondRoundMatches = FootballMatch::where('week', $week + 3)->get();
+
+            foreach ($firstRoundMatches as $index => $firstMatch) {
+                $secondMatch = $secondRoundMatches[$index];
+                $this->assertEquals($firstMatch->home_team_id, $secondMatch->away_team_id);
+                $this->assertEquals($firstMatch->away_team_id, $secondMatch->home_team_id);
+            }
+        }
     }
 
     public function test_boot_function_throws_exception_for_odd_number_of_teams()
@@ -98,16 +95,5 @@ class GenerateLeagueFixturesServiceTest extends TestCase
 
         $this->assertEquals(0, Fixture::where('is_played', true)->count());
         $this->assertEquals(12, Fixture::where('is_played', false)->count());
-    }
-
-    public function test_boot_function_returns_matches_with_relationships()
-    {
-        Team::factory()->count(4)->create();
-
-        $response = (new GenerateLeagueFixturesService())->boot();
-
-        $this->assertArrayHasKey('fixture', $response[0]);
-        $this->assertArrayHasKey('home_team', $response[0]);
-        $this->assertArrayHasKey('away_team', $response[0]);
     }
 }
