@@ -36,7 +36,7 @@ class FixtureController extends Controller
     public function getWeeklyFixture(Request $request, int $week): JsonResponse
     {
         try {
-            $data = (new ReadWeeklyFixtureService($request, $week))->boot();
+            $data = (new ReadWeeklyFixtureService($week))->boot();
             return $this->getSuccessfulResponse($data, 'Weekly fixture returned successfully');
         } catch (\Throwable $th) {
             return $this->getErrorResponse($th->getMessage(), $th->getCode());
@@ -70,8 +70,8 @@ class FixtureController extends Controller
     public function simulateWeekMatches(Request $request): JsonResponse
     {
         try {
-            $data = (new SimulateWeekService())->boot();
-            return $this->getSuccessfulResponse([], $data['message']);
+            $data = (new SimulateWeekService())->boot($request->week);
+            return $this->getSuccessfulResponse($data, 'Week matches simulated successfully');
         } catch (\Throwable $th) {
             return $this->getErrorResponse($th->getMessage(), $th->getCode());
         }
@@ -81,7 +81,7 @@ class FixtureController extends Controller
     {
         try {
             $data = (new SimulateAllWeeksService())->boot();
-            return $this->getSuccessfulResponse([], $data['message']);
+            return $this->getSuccessfulResponse($data, 'All weeks matches simulated successfully');
         } catch (\Throwable $th) {
             return $this->getErrorResponse($th->getMessage(), $th->getCode());
         }
