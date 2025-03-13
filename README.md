@@ -70,7 +70,6 @@ This comprehensive approach provides realistic predictions that evolve as the to
 ### Set Up .env File
 ```bash
     cp .env.example .env
-    php artisan migrate
 ```
 
 ### Install Laravel Sail
