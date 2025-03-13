@@ -13,6 +13,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('championship_predictions', function (Blueprint $table) {
+            $table->dropForeign(['team_id']);
             $table->dropColumn('team_id');
             $table->dropColumn('probability_percentage');
             $table->jsonb('predictions');
